@@ -62,4 +62,21 @@ class User extends Authenticatable
             ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
+
+    public function candidateJobs()
+    {
+        return $this->hasMany(CandidateJob::class, 'user_id');
+    }
+
+    public function jobApplications()
+    {
+        return $this->hasMany(JobApplication::class, 'user_id');
+    }
+
+    public function companies()
+    {
+        return $this->belongsToMany(Company::class, 'company_users', 'user_id', 'company_id')
+                    ->withPivot('role')
+                    ->withTimestamps();
+    }
 }
