@@ -35,7 +35,7 @@
                                 <a href="#" class="inline-block px-2 py-1.5 text-[#1b1b18] border border-transparent text-sm rounded-sm leading-normal">Find Jobs</a>
                                 <a href="#" class="inline-block px-2 py-1.5 text-[#1b1b18] border border-transparent text-sm rounded-sm leading-normal">Categories</a>
                                 <a href="#" class="inline-block px-2 py-1.5 text-[#1b1b18] border border-transparent text-sm rounded-sm leading-normal">Companies</a>
-                                <a href="#" class="py-[7px] px-2.5 inline-flex font-medium text-sm rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-100">Post Job</a>
+                                <a href="{{ route('company.jobs.create') }}" wire:navigate class="py-[7px] px-2.5 inline-flex font-medium text-sm rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-100">Post Job</a>
                             </div>
 
                             <div class="flex flex-col md:flex-row md:justify-end md:items-center gap-0.5 md:gap-1">
