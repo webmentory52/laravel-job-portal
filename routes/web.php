@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', Home::class)->name('home');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'superadmin'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
 });
 

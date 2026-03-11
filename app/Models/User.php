@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Library\Enums\UserRoleEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -78,5 +79,15 @@ class User extends Authenticatable
         return $this->belongsToMany(Company::class, 'company_users', 'user_id', 'company_id')
                     ->withPivot('role')
                     ->withTimestamps();
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === UserRoleEnum::Admin->value;
+    }
+
+    public function isUser()
+    {
+        return $this->role === UserRoleEnum::User->value;
     }
 }
