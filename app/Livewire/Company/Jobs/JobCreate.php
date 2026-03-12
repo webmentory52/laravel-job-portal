@@ -14,6 +14,8 @@ class JobCreate extends Component
     public function submit()
     {
         $this->form->save();
+
+        session()->flash("success", "<strong>Success!</strong> New job has been created.");
     }
 
     public function render()

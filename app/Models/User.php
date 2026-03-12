@@ -81,6 +81,11 @@ class User extends Authenticatable
                     ->withTimestamps();
     }
 
+    public function getCompany()
+    {
+        return $this->companies->first();
+    }
+
     public function isAdmin()
     {
         return $this->role === UserRoleEnum::Admin->value;

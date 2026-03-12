@@ -17,7 +17,8 @@ class CandidateJob extends Model
         "job_type_id",
         "work_place_id",
         "agreement_accepted",
-        "expires_at"
+        "expires_at",
+        "status"
     ];
 
     protected function casts() : array

@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Forms;
 
+use App\Library\Enums\JobStatusEnum;
+use App\Models\CandidateJob;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -16,6 +18,7 @@ class JobForm extends Form
     #[Validate('required')]
     public $location = "";
 
+    #[Validate('nullable')]
     public $salary = "";
 
     #[Validate('required')]
@@ -24,13 +27,38 @@ class JobForm extends Form
     #[Validate('required')]
     public $work_place_id = "";
 
-    public $expires_at = "";
+    #[Validate('nullable|date|after:today')]
+    public ?string $expires_at = null;
 
     #[Validate('required')]
     public $description = "";
 
+    #[Validate('required|accepted')]
+    public $agreement_accepted = 0;
+
     public function save()
     {
-        $this->validate();
+        $validated = $this->validate();
+
+        $validated = [...$validated,
+             'user_id' => auth()->user()->id,
+             'company_id' => auth()->user()->getCompany()?->id,
+//             'status' => JobStatusEnum::Pending->value,
+              'status' => JobStatusEnum::Approved->value
+        ];
+
+        $validated['description'] = [
+            [
+                "title" => "Job Description",
+                "content" => $this->description,
+                "title_editable" => false
+            ]
+        ];
+
+        $job = CandidateJob::create($validated);
+
+        $this->reset();
+
+        return $job;
     }
 }

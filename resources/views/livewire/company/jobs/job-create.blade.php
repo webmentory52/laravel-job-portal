@@ -8,6 +8,8 @@
 
         <div class="mt-12">
 
+            <x-auth-session-status :status="session('success')" />
+
             <!-- Form -->
             <form method="post" wire:submit.prevent="submit">
                 <div class="mb-4 sm:mb-8">
@@ -92,8 +94,26 @@
                     @enderror
                 </div>
 
+                <div class="flex mt-3">
+                    <div class="flex">
+                        <input type="checkbox" id="agreement_accepted" name="agreement_accepted" wire:model.defer.blur="form.agreement_accepted" value="1" class="shrink-0 mt-1.5 border-gray-200 rounded-sm text-blue-600 focus:ring-blue-500" />
+                    </div>
+                    <div class="ms-3">
+                        <label for="agreement_accepted" class="text-sm text-gray-600">By submitting this form I have read and acknowledged the terms and conditions</label>
+                    </div>
+                </div>
+                @error('form.agreement_accepted')
+                    <div class="text-red-500 text-sm">
+                        {{$message}}
+                    </div>
+                @enderror
+
                 <div class="mt-6 grid">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary" wire:loading.attr="disabled">
+                        Submit
+
+                        <svg wire:loading.delay.long class="ml-3  -ml-1 size-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    </button>
                 </div>
             </form>
 
