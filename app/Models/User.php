@@ -95,4 +95,14 @@ class User extends Authenticatable
     {
         return $this->role === UserRoleEnum::User->value;
     }
+
+    public function belongsToCompany(?int $companyId)
+    {
+        return $this->companies()->where("company_id", $companyId)->exists();
+    }
+
+    public function currentUserBelongsToCompany()
+    {
+        return $this->belongsToCompany($this->getCompany()?->id);
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Company extends Model
 {
@@ -12,6 +13,10 @@ class Company extends Model
         "logo",
         "email",
         "bio"
+    ];
+
+    protected $appends = [
+        "logo_url"
     ];
 
     public function candidateJobs()
@@ -34,5 +39,14 @@ class Company extends Model
     public function joinRequests()
     {
         return $this->hasMany(JoinRequest::class, 'company_id');
+    }
+
+    public function getLogoUrlAttribute()
+    {
+        if($this->logo) {
+            return Storage::url($this->logo);
+        }
+
+        return null;
     }
 }

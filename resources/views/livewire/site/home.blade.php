@@ -6,7 +6,7 @@
             Search through hundreds of job listings to find the perfect opportunity.
         </p>
         <div class="max-w-lg mx-auto">
-                <input type="text" class="py-2.5 sm:py-3 px-4 block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Search jobs..." />
+                <input type="text" name="query" wire:model.live.debounce.250ms="search" class="py-2.5 sm:py-3 px-4 block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Search jobs..." />
         </div>
     </div>
 
@@ -16,16 +16,17 @@
             <h2 class="font-semibold text-2xl">Latest Job Listings</h2>
         </div>
 
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        @if($jobs->count() > 0)
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-            <x-job-templates.job-card />
-            <x-job-templates.job-card />
-            <x-job-templates.job-card />
-            <x-job-templates.job-card />
-            <x-job-templates.job-card />
-            <x-job-templates.job-card />
+                @foreach($jobs as $job)
+                    <x-job-templates.job-card :job="$job" />
+                @endforeach
 
-        </div>
+            </div>
+        @else
+            <p class="text-center text-gray-500">No job listings found.</p>
+        @endif
 
     </div>
 </div>

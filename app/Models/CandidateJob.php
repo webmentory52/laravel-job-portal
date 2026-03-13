@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Library\Enums\JobStatusEnum;
 use Illuminate\Database\Eloquent\Model;
 
 class CandidateJob extends Model
@@ -56,5 +57,10 @@ class CandidateJob extends Model
     public function workPlace()
     {
         return $this->belongsTo(WorkPlace::class);
+    }
+
+    public function scopeApproved($query)
+    {
+        $query->where('status', JobStatusEnum::Approved->value);
     }
 }
