@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Company\Jobs;
 
+use App\Library\Traits\JobFormHelpersTrait;
 use App\Livewire\Forms\JobForm;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -9,6 +10,8 @@ use Livewire\Component;
 #[Title('Post New Job')]
 class JobCreate extends Component
 {
+    use JobFormHelpersTrait;
+
     public JobForm $form;
 
     public function submit()

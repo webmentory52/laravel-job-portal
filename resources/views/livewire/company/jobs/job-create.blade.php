@@ -16,15 +16,15 @@
                     <label for="title" class="block mb-2 text-sm font-medium text-foreground">Job Title</label>
                     <input type="text" id="title" name="title" wire:model.live.blur="form.title" class="input" placeholder="Job Title">
                     @error('form.title')
-                      <div class="text-red-500 text-sm">
-                          {{$message}}
-                      </div>
+                    <div class="text-red-500 text-sm">
+                        {{$message}}
+                    </div>
                     @enderror
                 </div>
 
                 <div class="mb-4 sm:mb-8">
                     <label for="category" class="block mb-2 text-sm font-medium text-foreground">Job Category</label>
-                    <flux:select wire:model.live="form.category_id" placeholder="Choose category...">
+                    <flux:select wire:model.live.blur="form.category_id" placeholder="Choose category...">
                         @foreach(\App\Models\Category::all() as $category)
                             <flux:select.option value="{{$category->id}}" wire:key="{{$category->id}}">{{$category->name}}</flux:select.option>
                         @endforeach
@@ -40,9 +40,9 @@
                     <label for="location" class="block mb-2 text-sm font-medium text-foreground">Job Location</label>
                     <input type="text" id="location" name="location" wire:model.live.blur="form.location" class="input" placeholder="Job Location">
                     @error('form.location')
-                        <div class="text-red-500 text-sm">
-                            {{$message}}
-                        </div>
+                    <div class="text-red-500 text-sm">
+                        {{$message}}
+                    </div>
                     @enderror
                 </div>
 
@@ -53,21 +53,21 @@
 
                 <div class="mb-4 sm:mb-8">
                     <label for="job_type_id" class="block mb-2 text-sm font-medium text-foreground">Job Type</label>
-                    <flux:select placeholder="Choose job type..." wire:model.live="form.job_type_id">
+                    <flux:select placeholder="Choose job type..." wire:model.live.blur="form.job_type_id">
                         @foreach(\App\Models\JobType::all() as $jobType)
                             <flux:select.option value="{{$jobType->id}}" wire:key="{{$jobType->id}}">{{$jobType->name}}</flux:select.option>
                         @endforeach
                     </flux:select>
                     @error('form.job_type_id')
-                        <div class="text-red-500 text-sm">
-                            {{$message}}
-                        </div>
+                    <div class="text-red-500 text-sm">
+                        {{$message}}
+                    </div>
                     @enderror
                 </div>
 
                 <div class="mb-4 sm:mb-8">
                     <label for="work_place_id" class="block mb-2 text-sm font-medium text-foreground">Work Place</label>
-                    <flux:select wire:model.live="form.work_place_id" placeholder="Choose work place...">
+                    <flux:select wire:model.live.blur="form.work_place_id" placeholder="Choose work place...">
                         @foreach(\App\Models\WorkPlace::all() as $workPlace)
                             <flux:select.option value="{{$workPlace->id}}" wire:key="{{$workPlace->id}}">{{$workPlace->name}}</flux:select.option>
                         @endforeach
@@ -84,15 +84,57 @@
                     <input type="date" id="expires_at" wire:model.live.blur="form.expires_at" name="expires_at" class="input">
                 </div>
 
-                <div class="mb-4 sm:mb-8">
-                    <label for="description" class="block mb-2 text-sm font-medium text-foreground">Job Descriptions</label>
-                    <textarea id="description" name="description" wire:model.live.blur="form.description" class="input"></textarea>
-                    @error('form.description')
+                <h2 class="font-semibold text-2xl">Job Descriptions</h2>
+                <hr class="mb-3"/>
+
+                @foreach($form->description as $i => $description)
+                    <div class="mb-4 sm:mb-8">
+                        <div class="flex gap-2 items-center" wire:show="form.description[{{$i}}].title_editable == false">
+                            <label for="description" class="block mb-2 text-sm font-medium text-foreground">{{ $description['title'] ?: 'N/A' }}</label>
+                            <flux:icon.pencil wire:click="toggleSectionTitleEditable({{$i}})" class="size-4 cursor-pointer" title="Edit Title" />
+                        </div>
+
+                        <div class="flex gap-2 items-center" wire:show="form.description[{{$i}}].title_editable">
+                            <input
+                                type="text"
+                                wire:model.defer.blur="form.description.{{ $i }}.title"
+                                class="py-1 sm:py-2 px-4 block w-full border border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500"
+                            >
+
+                            <div class="flex gap-1">
+                                <button type="button" wire:click.prevent="toggleSectionTitleEditable({{$i}})" class="px-2 py-1 text-white bg-gray-600 rounded-md hover:bg-gray-700 text-xs ml-2 cursor-pointer">Save</button>
+                            </div>
+                        </div>
+
+                        <textarea id="description" name="description" wire:model.live.blur="form.description.{{ $i }}.content" class="input"></textarea>
+
+                        <div class="text-end">
+                            <button
+                                type="button"
+                                wire:click.prevent="removeSection({{$i}})"
+                                class="text-red-500 ml-2 text-xl cursor-pointer" title="remove section">
+                                ✕
+                            </button>
+                        </div>
+
+                    </div>
+                @endforeach
+
+                <div>
+                    <button
+                        type="button"
+                        wire:click.prevent="addDescriptionSection"
+                        class="w-full mt-3 px-4 py-2 text-sm bg-gray-100 rounded hover:bg-gray-200">
+                        + Add description section
+                    </button>
+                </div>
+
+
+                @error('form.description')
                     <div class="text-red-500 text-sm">
                         {{$message}}
                     </div>
-                    @enderror
-                </div>
+                @enderror
 
                 <div class="flex mt-3">
                     <div class="flex">
@@ -103,9 +145,9 @@
                     </div>
                 </div>
                 @error('form.agreement_accepted')
-                    <div class="text-red-500 text-sm">
-                        {{$message}}
-                    </div>
+                <div class="text-red-500 text-sm">
+                    {{$message}}
+                </div>
                 @enderror
 
                 <div class="mt-6 grid">

@@ -30,8 +30,27 @@ class JobForm extends Form
     #[Validate('nullable|date|after:today')]
     public ?string $expires_at = null;
 
-    #[Validate('required')]
-    public $description = "";
+    #[Validate('required|array')]
+    #[Validate(['description.*.title' => 'nullable|string'])]
+    #[Validate(['description.*.content' => 'nullable|string'])]
+    #[Validate(['description.*.title_editable' => 'nullable|boolean'])]
+    public $description = [
+        [
+            "title" => "Job Description",
+            "content" => "",
+            "title_editable" => false
+        ],
+        [
+            "title" => "Requirements",
+            "content" => "",
+            "title_editable" => false
+        ],
+        [
+            "title" => "Benefits",
+            "content" => "",
+            "title_editable" => false
+        ]
+    ];
 
     #[Validate('required|accepted')]
     public $agreement_accepted = 0;
@@ -40,20 +59,19 @@ class JobForm extends Form
     {
         $validated = $this->validate();
 
+        if(!$this->hasAtLeastOneDescriptionItem()) {
+            $this->addError('description', 'You must add at least one description section.');
+            return;
+        }
+
         $validated = [...$validated,
-             'user_id' => auth()->user()->id,
-             'company_id' => auth()->user()->getCompany()?->id,
+            'user_id' => auth()->user()->id,
+            'company_id' => auth()->user()->getCompany()?->id,
 //             'status' => JobStatusEnum::Pending->value,
-              'status' => JobStatusEnum::Approved->value
+            'status' => JobStatusEnum::Approved->value
         ];
 
-        $validated['description'] = [
-            [
-                "title" => "Job Description",
-                "content" => $this->description,
-                "title_editable" => false
-            ]
-        ];
+        $validated['description'] = array_filter($validated['description'], fn($item) => isset($item['title']) && isset($item['content']));
 
         $job = CandidateJob::create($validated);
 
@@ -61,4 +79,12 @@ class JobForm extends Form
 
         return $job;
     }
+
+    protected function hasAtLeastOneDescriptionItem()
+    {
+        return collect($this->description)->contains(function ($item) {
+            return filled($item['title'] ?? null) && filled($item['content'] ?? null);
+        });
+    }
+
 }

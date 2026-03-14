@@ -9,7 +9,7 @@
             <div class="flex justify-between items-start">
             <div>
                 <h3 class="font-semibold text-lg text-gray-800 group-hover:text-blue-600">
-                    <a>
+                    <a href="{{ route('job-detail', [$job->id, \Illuminate\Support\Str::slug($job->title)]) }}">
                         {{$job->title}}
                     </a>
                 </h3>
