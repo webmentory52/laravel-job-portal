@@ -22,7 +22,7 @@
     </div>
 
     <div class="mt-auto text-end">
-        <a href="#" class="cursor-pointer inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:underline">
+        <a href="{{ route('job-detail', [$job->id, \Illuminate\Support\Str::slug($job->title)]) }}" class="cursor-pointer inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:underline">
             View Details
             <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8h10m0 0L9 4m4 4-4 4"/></svg>
         </a>

@@ -63,4 +63,14 @@ class CandidateJob extends Model
     {
         $query->where('status', JobStatusEnum::Approved->value);
     }
+
+    public function isApproved()
+    {
+        return $this->status === JobStatusEnum::Approved->value;
+    }
+
+    public function isExpired()
+    {
+        return $this->status === JobStatusEnum::Expired->value;
+    }
 }
