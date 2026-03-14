@@ -3,12 +3,16 @@
 use App\Livewire\Company\Jobs\JobCreate as CompanyJobCreate;
 use App\Livewire\Site\Home;
 use App\Livewire\Site\JobDetail;
+use App\Livewire\Site\UserOnboarding;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', Home::class)->name('home');
 Route::get('/job/{id}/{slug?}', JobDetail::class)->name('job-detail');
 
 Route::middleware(['auth'])->group(function () {
+
+    Route::get('/onboarding', UserOnboarding::class)->name('onboarding.show');
+
     Route::middleware(['verified', 'superadmin'])->group(function () {
         Route::view('dashboard', 'dashboard')->name('dashboard');
     });
