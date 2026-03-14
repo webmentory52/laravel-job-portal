@@ -106,7 +106,8 @@
                             </div>
                         </div>
 
-                        <textarea id="description" name="description" wire:model.live.blur="form.description.{{ $i }}.content" class="input"></textarea>
+                        <x-shared.trix wire:model.defer="form.description.{{ $i }}.content" />
+{{--                        <textarea id="description" name="description" wire:model.live.blur="form.description.{{ $i }}.content" class="input"></textarea>--}}
 
                         <div class="text-end">
                             <button

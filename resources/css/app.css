@@ -82,3 +82,57 @@ select:focus[data-flux-control] {
         @apply text-xs font-semibold bg-gray-200 px-1
     }
 }
+
+trix-editor {
+    min-height: 10em !important;
+}
+
+
+trix-editor ul { list-style-type: disc !important; margin-left: 1rem !important; }
+trix-editor ol { list-style-type: decimal !important; margin-left: 1rem !important; }
+.trix-content ul { list-style-type: disc !important; margin-left: 1rem !important; }
+.trix-content ol { list-style-type: decimal !important; margin-left: 1rem !important; }
+
+trix-editor h1 {
+    font-size: 1.2em !important;
+    line-height: 1.2 !important;
+    font-weight: 600 !important;
+}
+
+trix-editor blockquote {
+    border-left: 0.3em solid #ccc !important;
+    margin-left: 0.3em !important;
+    padding-left: 0.6em !important;
+}
+
+trix-editor pre {
+    display: inline-block !important;
+    width: 100% !important;
+    vertical-align: top !important;
+    background-color: #eee !important;
+    font-family: monospace !important;
+    font-size: 0.9em !important;
+    padding: 0.5em !important;
+    white-space: pre !important;
+    overflow-x: auto !important;
+}
+
+trix-editor a {
+    color: #0000ee !important;
+    text-decoration: underline !important;
+}
+
+.trix-content a {
+    color: #0000ee !important;
+    text-decoration: underline !important;
+}
+
+.job-description ul {
+    list-style-type: disc;
+    margin-inline-start: 1rem;
+}
+
+.job-description ol {
+    list-style-type: decimal;
+    margin-inline-start: 1rem;
+}
