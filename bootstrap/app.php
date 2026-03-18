@@ -12,7 +12,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-           'company' => \App\Http\Middleware\CompanyMiddleware::class
+           'company' => \App\Http\Middleware\CompanyMiddleware::class,
+           'check.onboarding' => \App\Http\Middleware\CheckOnboarding::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

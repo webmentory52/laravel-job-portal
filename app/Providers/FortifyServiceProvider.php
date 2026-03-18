@@ -24,6 +24,11 @@ class FortifyServiceProvider extends ServiceProvider
         $this->app->instance(LoginResponse::class, new class implements LoginResponse {
             public function toResponse($request)
             {
+                // Check onboarding
+                if(!auth()->user()->user_onboarding) {
+                    return redirect()->route('onboarding.show');
+                }
+
                 return match (Auth::user()->role) {
                     UserRoleEnum::Admin->value => redirect('/dashboard'),
                     UserRoleEnum::User->value => redirect('/')

@@ -17,9 +17,13 @@ Route::middleware(['auth'])->group(function () {
         Route::view('dashboard', 'dashboard')->name('dashboard');
     });
 
-    Route::middleware(['company'])->prefix('company')->name('company.')->group(function() {
-        Route::get('/jobs/create/{id?}', CompanyJobCreate::class)->name('jobs.create');
+    Route::middleware(['check.onboarding'])->group(function () {
+
+        Route::middleware(['company'])->prefix('company')->name('company.')->group(function() {
+            Route::get('/jobs/create/{id?}', CompanyJobCreate::class)->name('jobs.create');
+        });
     });
+
 });
 
 require __DIR__.'/settings.php';
