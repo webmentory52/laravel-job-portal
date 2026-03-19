@@ -15,6 +15,8 @@ class CreateCompany extends Component
     public function submit()
     {
         $this->form->create(auth()->user());
+
+        $this->dispatch("company-created", ["id" => $this->form->company->id]);
     }
 
     public function render()

@@ -1,5 +1,6 @@
 import "trix";
 import "trix/dist/trix.css";
+import '../../vendor/masmerise/livewire-toaster/resources/js';
 
 document.addEventListener('alpine:init', () => {
 

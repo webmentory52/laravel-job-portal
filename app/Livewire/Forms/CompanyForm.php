@@ -46,6 +46,8 @@ class CompanyForm extends Form
 
         // Attach user to company
         $user->companies()->attach($this->company->id, ['role' => 'admin']);
+
+        $this->resetExcept(['company', 'bioMaxLength']);
     }
 
     private function uploadLogo()
