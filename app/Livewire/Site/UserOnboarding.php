@@ -27,6 +27,14 @@ class UserOnboarding extends Component
         return redirect('/');
     }
 
+    #[On('join-request-sent')]
+    public function onJoinCompany()
+    {
+        Toaster::success("Join request sent!");
+
+        return redirect('/');
+    }
+
     public function render()
     {
         return view('livewire.site.user-onboarding')

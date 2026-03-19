@@ -64,8 +64,10 @@
 
             <div class="mt-6" x-show="type === 'company'">
                 <div x-show="mode === 'join'">
-                    Join company form
-{{--                    <livewire:company.join />--}}
+
+                    <h3 class="font-semibold mb-2 text-center">Join company</h3>
+
+                    <livewire:company.join-company />
                 </div>
 
                 <div x-show="mode === 'create'">
