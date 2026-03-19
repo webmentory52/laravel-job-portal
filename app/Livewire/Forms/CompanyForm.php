@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms;
 
+use App\Models\Company;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -11,8 +12,12 @@ class CompanyForm extends Form
     public $website = "";
     public $email = "";
     public $bio = "";
-    public $logo = "";
+    public $logo = null;
 
+    public $bioMaxLength = 3000;
+
+
+    public $company;
 
     protected function rules()
     {
@@ -20,15 +25,41 @@ class CompanyForm extends Form
           "company_name" => "required|string|max:100",
           "website" => "required|url|string",
           "email" => "required|email|string",
-          "bio" => "required|string|max:3000",
+          "bio" => "required|string|max:" . $this->bioMaxLength,
           "logo" => "nullable|image|max:3024|mimes:jpg,jpeg,png,webp",
         ];
     }
 
-    public function save()
+    public function create($user)
     {
-        $this->validate();
+        $validated = $this->validate();
 
-        dd($this->all());
+        $this->company = Company::create($validated);
+
+        $user->update([
+           'role' => 'user',
+           'user_onboarding' => true
+        ]);
+
+        // Upload logo
+        $this->uploadLogo();
+
+        // Attach user to company
+        $user->companies()->attach($this->company->id, ['role' => 'admin']);
+    }
+
+    private function uploadLogo()
+    {
+        if($this->logo) {
+            $path = $this->logo->storeAs(
+              'company/logos/' . $this->company->id,
+               'logo.' . $this->logo->getClientOriginalExtension(),
+               'public'
+            );
+
+            $this->company->update([
+               'logo' => $path
+            ]);
+        }
     }
 }

@@ -4,14 +4,17 @@ namespace App\Livewire\Company;
 
 use App\Livewire\Forms\CompanyForm;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class CreateCompany extends Component
 {
+    use WithFileUploads;
+
     public CompanyForm $form;
 
     public function submit()
     {
-        $this->form->save();
+        $this->form->create(auth()->user());
     }
 
     public function render()

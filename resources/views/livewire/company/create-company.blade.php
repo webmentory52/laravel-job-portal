@@ -17,11 +17,11 @@
         @error('form.email') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
     </div>
 
-    <div>
+    <div x-data="{desc: $wire.entangle('form.bio'), bio_max_length: $wire.entangle('form.bioMaxLength')}">
         <label class="block mb-2 text-sm font-medium dark:text-white">Bio</label>
-        <textarea rows="8" name="bio" wire:model.blur="form.bio" class="input border"></textarea>
+        <textarea rows="8" name="bio" x-model="desc" @input="if(desc.length > bio_max_length) desc = desc.substring(0, bio_max_length)" class="input border"></textarea>
 
-        <span class="block mb-2 text-sm text-gray-500 dark:text-neutral-500 float-end mt-1"><span x-text="desc.length"></span> / <span x-text="desc_length"></span> characters</span>
+        <span class="block mb-2 text-sm text-gray-500 float-end mt-1"><span x-text="desc.length"></span> / <span x-text="bio_max_length"></span> characters</span>
 
         @error('form.bio') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
     </div>
