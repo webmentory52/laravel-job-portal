@@ -5,8 +5,11 @@ namespace App\Livewire\Company;
 use App\Library\Enums\JoinRequestStatusEnum;
 use App\Models\Company;
 use App\Models\JoinRequest;
+use App\Models\User;
+use App\Notifications\CompanyJoinRequestNotification;
 use Livewire\Component;
 use Masmerise\Toaster\Toaster;
+use Illuminate\Support\Facades\Notification;
 
 class JoinCompany extends Component
 {
@@ -29,8 +32,8 @@ class JoinCompany extends Component
         }
 
         // Check if there any join requests
-        if(JoinRequest::where('user_id', auth()->id)
-            ->where('company_id', $this->company_id)
+        if(JoinRequest::where('user_id', auth()->user()->id)
+            ->where('company_id', $this->companyId)
             ->where('status', JoinRequestStatusEnum::Pending->value)->exists()) {
 
             Toaster::error("You already sent a request before!");
@@ -45,6 +48,12 @@ class JoinCompany extends Component
         ]);
 
         // Notify company admins
+        $admins = User::whereHas('companies', function($query) {
+            $query->where('role', 'admin')
+                  ->where('company_id', $this->companyId);
+        })->get();
+
+        Notification::send($admins, new CompanyJoinRequestNotification(auth()->user()));
 
         // dispatch event
         $this->dispatch("join-request-sent", $this->companyId);

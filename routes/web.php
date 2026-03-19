@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Company\Jobs\JobCreate as CompanyJobCreate;
+use App\Livewire\Company\JoinRequests;
 use App\Livewire\Site\Home;
 use App\Livewire\Site\JobDetail;
 use App\Livewire\Site\UserOnboarding;
@@ -21,6 +22,8 @@ Route::middleware(['auth'])->group(function () {
 
         Route::middleware(['company'])->prefix('company')->name('company.')->group(function() {
             Route::get('/jobs/create/{id?}', CompanyJobCreate::class)->name('jobs.create');
+
+            Route::get('/join-requests', JoinRequests::class)->name('join-requests');
         });
     });
 
