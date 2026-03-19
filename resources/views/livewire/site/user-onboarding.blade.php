@@ -69,8 +69,8 @@
                 </div>
 
                 <div x-show="mode === 'create'">
-                    Create company form
-{{--                    <livewire:company.create-company />--}}
+                     <h3 class="font-semibold mb-2 text-center">Create a new company</h3>
+                     <livewire:company.create-company />
                 </div>
             </div>
         </div>

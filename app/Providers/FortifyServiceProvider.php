@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\LoginResponse;
+use Laravel\Fortify\Contracts\RegisterResponse;
 use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
@@ -29,10 +30,19 @@ class FortifyServiceProvider extends ServiceProvider
                     return redirect()->route('onboarding.show');
                 }
 
-                return match (Auth::user()->role) {
-                    UserRoleEnum::Admin->value => redirect('/dashboard'),
-                    UserRoleEnum::User->value => redirect('/')
-                };
+                return redirect(Auth::user()->getRedirectUrl());
+            }
+        });
+
+        $this->app->instance(RegisterResponse::class, new class implements RegisterResponse {
+            public function toResponse($request)
+            {
+                // Check onboarding
+                if(!auth()->user()->user_onboarding) {
+                    return redirect()->route('onboarding.show');
+                }
+
+                return redirect(Auth::user()->getRedirectUrl());
             }
         });
     }

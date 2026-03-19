@@ -106,4 +106,12 @@ class User extends Authenticatable
     {
         return $this->belongsToCompany($this->getCompany()?->id);
     }
+
+    public function getRedirectUrl()
+    {
+        return match ($this->role) {
+            UserRoleEnum::Admin->value => '/dashboard',
+            UserRoleEnum::User->value => '/'
+        };
+    }
 }
