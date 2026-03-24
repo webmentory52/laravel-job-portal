@@ -4,6 +4,8 @@ namespace App\Livewire\Company;
 
 use App\Library\Enums\JoinRequestStatusEnum;
 use App\Models\JoinRequest;
+use App\Notifications\JoinRequestApproved;
+use App\Notifications\JoinRequestRejected;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Masmerise\Toaster\Toaster;
@@ -14,26 +16,26 @@ class JoinRequests extends Component
 
     public function approve(int $id)
     {
-        $rejoinRequest = JoinRequest::findOrFail($id);
+        $joinRequest = JoinRequest::findOrFail($id);
 
         // Update status
-        $rejoinRequest->update([
+        $joinRequest->update([
             'status' => JoinRequestStatusEnum::Accepted->value,
             'approved_at' => now()
         ]);
 
         // Update user onboarding status
-        $rejoinRequest->user->update([
+        $joinRequest->user->update([
             'user_onboarding' => true,
             'role' => 'user'
         ]);
 
         // Attach user to company
-        $rejoinRequest->user->companies()->attach($rejoinRequest->company_id, ['role' => 'member']);
+        $joinRequest->user->companies()->attach($joinRequest->company_id, ['role' => 'member']);
 
 
         // Send notification to user
-
+        $joinRequest->user->notify(new JoinRequestApproved($joinRequest->company));
 
         // Show success
         Toaster::success("Request approved successfully!");
@@ -43,21 +45,22 @@ class JoinRequests extends Component
 
     public function reject(int $id)
     {
-        $rejoinRequest = JoinRequest::findOrFail($id);
+        $joinRequest = JoinRequest::findOrFail($id);
 
         // Update status
-        $rejoinRequest->update([
+        $joinRequest->update([
             'status' => JoinRequestStatusEnum::Rejected->value,
-            'approved_at' => now()
+            'rejected_at' => now()
         ]);
 
         // Update user onboarding status
-        $rejoinRequest->user->update([
+        $joinRequest->user->update([
             'user_onboarding' => true,
             'role' => 'user'
         ]);
 
         // Send notification to user
+        $joinRequest->user->notify(new JoinRequestRejected($joinRequest->company));
 
         // Show success
         Toaster::success("Request rejected!");
@@ -70,6 +73,7 @@ class JoinRequests extends Component
         $joinRequests = JoinRequest::with('user')->where('company_id', auth()->user()?->getCompany()->id)
                         ->latest()
                         ->paginate(10);
+
 
         return view('livewire.company.join-requests', compact('joinRequests'))
                 ->layout('layouts.site');

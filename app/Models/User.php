@@ -107,6 +107,14 @@ class User extends Authenticatable
         return $this->belongsToCompany($this->getCompany()?->id);
     }
 
+    public function isCurrentUserCompanyAdmin()
+    {
+        return $this->companies()
+            ->where('company_id', $this->getCompany()?->id)
+            ->wherePivot('role', 'admin')
+            ->exists();
+    }
+
     public function getRedirectUrl()
     {
         return match ($this->role) {
