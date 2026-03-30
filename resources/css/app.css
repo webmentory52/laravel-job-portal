@@ -86,6 +86,14 @@ select:focus[data-flux-control] {
     .onboarding-btn {
         @apply w-full flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition cursor-pointer
     }
+
+    .filter-controls {
+        @apply flex-3 justify-between flex items-center gap-2;
+    }
+
+    .radio {
+        @apply w-4 h-4 rounded-full border appearance-none;
+    }
 }
 
 trix-editor {
@@ -140,4 +148,55 @@ trix-editor a {
 .job-description ol {
     list-style-type: decimal;
     margin-inline-start: 1rem;
+}
+
+[type=checkbox], [type=radio] {
+    appearance: none;
+    print-color-adjust: exact;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    user-select: none;
+    width: 1rem;
+    height: 1rem;
+    color: oklch(48.8% .243 264.376);
+    border-color: oklch(92.8% .006 264.531);
+    --tw-shadow: 0 0 #0000;
+    background-color: #fff;
+    background-origin: border-box;
+    border-width: 1px;
+    flex-shrink: 0;
+    padding: 0;
+    display: inline-block;
+    position: relative;
+}
+
+[type=checkbox]:checked, [type=radio]:checked, .dark [type=checkbox]:checked, .dark [type=radio]:checked {
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-color: currentColor !important;
+    background-size: .85em .85em !important;
+}
+
+[type=radio]:checked:before, [type=radio]:disabled:checked:before {
+    content: "";
+    background-color: oklch(48.8% .243 264.376);
+    border-radius: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: .9em !important;
+    height: .9em !important;
+}
+
+[type=radio]:checked:after, [type=radio]:disabled:checked:after {
+    content: "";
+    background-color: #fff;
+    border-radius: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: .35em !important;
+    height: .35em !important;
 }
