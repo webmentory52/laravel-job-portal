@@ -103,13 +103,21 @@
             <!-- Job Listings -->
             <div class="col-span-12 md:col-span-9">
 
-                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                @if($candidateJobs->count() > 0)
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        @foreach($candidateJobs as $job)
+                            <x-job-templates.job-card :job="$job" wire:key="{{$job->id}}" />
+                        @endforeach
+                    </div>
+                @else
+                    <p class="text-center text-gray-500">There is no job listings that match your search criteria</p>
+                @endif
 
-                </div>
+
 
                 <!-- Pagination -->
-                <div>
-
+                <div class="mt-4">
+                    {!! $candidateJobs->links() !!}
                 </div>
 
             </div>
