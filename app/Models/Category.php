@@ -10,4 +10,9 @@ class Category extends Model
         "name",
         "slug"
     ];
+
+    public function candidateJobs()
+    {
+        return $this->hasMany(CandidateJob::class);
+    }
 }
