@@ -12,6 +12,21 @@ class SearchFilters extends Component
 {
     public bool $displayAllCategories = false;
 
+    public string $keyword = "";
+
+    public $categoryId = null;
+
+    public $jobTypeId = null;
+
+    public $workPlaceId = null;
+
+    public function updated($property)
+    {
+        if(in_array($property, ['keyword', 'categoryId', 'jobTypeId', 'workPlaceId'])) {
+            $this->dispatch("filter", $property, $this->$property);
+        }
+    }
+
     public function toggleAllCategories()
     {
         $this->displayAllCategories = !$this->displayAllCategories;
