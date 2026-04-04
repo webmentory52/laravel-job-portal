@@ -33,7 +33,7 @@
 
                             <div class="flex flex-col md:flex-row md:justify-end md:items-center gap-4 md:gap-5">
                                 <a href="{{route('jobs.search')}}" wire:navigate class="inline-block px-2 py-1.5 text-[#1b1b18] border border-transparent text-sm rounded-sm leading-normal {{ request()->routeIs('jobs.search') ? 'bg-gray-200' : '' }}">Find Jobs</a>
-                                <a href="{{ route('categories') }}" wire:navigate class="inline-block px-2 py-1.5 text-[#1b1b18] border border-transparent text-sm rounded-sm leading-normal {{ request()->routeIs('categories') ? 'bg-gray-200' : '' }}">Categories</a>
+                                <a href="{{ route('categories') }}" wire:navigate class="inline-block px-2 py-1.5 text-[#1b1b18] border border-transparent text-sm rounded-sm leading-normal {{ request()->routeIs('categories') || request()->routeIs('categories.*') ? 'bg-gray-200' : '' }}">Categories</a>
                                 <a href="#" class="inline-block px-2 py-1.5 text-[#1b1b18] border border-transparent text-sm rounded-sm leading-normal">Companies</a>
                                 <a href="{{ route('company.jobs.create') }}" wire:navigate class="py-[7px] px-2.5 inline-flex font-medium text-sm rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-100">Post Job</a>
                             </div>

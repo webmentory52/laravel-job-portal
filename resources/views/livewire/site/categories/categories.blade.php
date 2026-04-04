@@ -3,7 +3,7 @@
 
     <div class="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-6">
         @forelse($categories as $category)
-            <a href="#" class="border rounded-lg p-6 hover:shadow-lg transition bg-white">
+            <a href="{{route('categories.detail', [$category->id, $category->slug])}}" class="border rounded-lg p-6 hover:shadow-lg transition bg-white">
                 <h3 class="text-lg font-semibold">
                     {{$category->name}}
                 </h3>

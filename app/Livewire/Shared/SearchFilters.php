@@ -21,6 +21,8 @@ class SearchFilters extends Component
 
     public $workPlaceId = "";
 
+    public bool $showCategoriesFilter = true;
+
     public function updated($property)
     {
         if(in_array($property, ['keyword', 'categoryId', 'jobTypeId', 'workPlaceId'])) {
