@@ -31,6 +31,9 @@ class JobSearch extends Component
     #[Url]
     public $workPlaceId = "";
 
+    #[Url]
+    public $viewMode = "grid";
+
     public function handleFilter($event)
     {
         [$property, $value] = $event;
@@ -64,6 +67,8 @@ class JobSearch extends Component
     {
         if(property_exists($this, $type)) {
             $this->$type = "";
+
+            $this->dispatch("clear-filter", $type);
         }
     }
 

@@ -10,7 +10,7 @@
         <h4 class="font-semibold mb-2">Categories</h4>
 
         <div class="flex items-center mb-1">
-            <input type="radio" id="category_all" name="category" wire:model.live="categoryId" class="radio" value="" checked />
+            <input type="radio" id="category_all" name="category" wire:model.live="categoryId" class="radio" value="" />
             <label for="category_all" class="select-none ms-2 text-sm font-normal text-heading">All</label>
         </div>
 
@@ -31,7 +31,7 @@
         <h4 class="font-semibold mb-2">Job Type</h4>
 
         <div class="flex items-center mb-1">
-            <input type="radio" id="jobtype_all" name="jobtype" wire:model.live="jobTypeId" class="radio" value="" checked />
+            <input type="radio" id="jobtype_all" name="jobtype" wire:model.live="jobTypeId" class="radio" value="" />
             <label for="jobtype_all" class="select-none ms-2 text-sm font-normal text-heading">All</label>
         </div>
 
@@ -48,7 +48,7 @@
         <h4 class="font-semibold mb-2">Work Place</h4>
 
         <div class="flex items-center mb-1">
-            <input type="radio" id="workplace_all" name="workplace" class="radio" wire:model.live="workPlaceId" value="" checked />
+            <input type="radio" id="workplace_all" name="workplace" class="radio" wire:model.live="workPlaceId" value="" />
             <label for="workplace_all" class="select-none ms-2 text-sm font-normal text-heading">All</label>
         </div>
 

@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\JobType;
 use App\Models\WorkPlace;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class SearchFilters extends Component
@@ -14,11 +15,11 @@ class SearchFilters extends Component
 
     public string $keyword = "";
 
-    public $categoryId = null;
+    public $categoryId = "";
 
-    public $jobTypeId = null;
+    public $jobTypeId = "";
 
-    public $workPlaceId = null;
+    public $workPlaceId = "";
 
     public function updated($property)
     {
@@ -67,6 +68,14 @@ class SearchFilters extends Component
             ->having('candidate_jobs_count', '>', 0)
             ->orderByDesc('candidate_jobs_count')
             ->get();
+    }
+
+    #[On('clear-filter')]
+    public function onClearFilter($type)
+    {
+        if(property_exists($this, $type)) {
+            $this->$type = "";
+        }
     }
 
     public function render()
