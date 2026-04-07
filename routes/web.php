@@ -2,14 +2,13 @@
 
 use App\Livewire\Company\Jobs\JobCreate as CompanyJobCreate;
 use App\Livewire\Company\JoinRequests;
-use App\Livewire\Site\{
-    Categories\Categories,
+use App\Livewire\Site\{Categories\Categories,
     Categories\CategoryDetail,
+    Companies\Companies as CompaniesSite,
     Home,
     JobDetail,
     JobSearch,
-    UserOnboarding
-};
+    UserOnboarding};
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', Home::class)->name('home');
@@ -17,6 +16,7 @@ Route::get('/job/{id}/{slug?}', JobDetail::class)->name('job-detail');
 Route::get('/job-search', JobSearch::class)->name('jobs.search');
 Route::get('/categories', Categories::class)->name('categories');
 Route::get('/c/{id}/{slug?}', CategoryDetail::class)->name('categories.detail');
+Route::get('/companies', CompaniesSite::class)->name('companies');
 
 Route::middleware(['auth'])->group(function () {
 
