@@ -5,7 +5,7 @@
 
         @forelse($companies as $company)
             <!-- Company Card -->
-            <a href="#" class="border rounded-xl p-6 hover:shadow-lg transition">
+            <a href="{{ route('company.detail', [$company->id, \Str::slug($company->company_name)])  }}" class="border rounded-xl p-6 hover:shadow-lg transition">
                 <div class="flex items-center gap-4">
 
                     <img src="{{\Storage::url($company->logo)}}" alt="{{$company->company_name}} logo" onerror="this.src='{{ asset('assets/images/logo-dummy.png') }}'" class="w-12 h-12 object-cover rounded-full" />

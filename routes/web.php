@@ -5,6 +5,7 @@ use App\Livewire\Company\JoinRequests;
 use App\Livewire\Site\{Categories\Categories,
     Categories\CategoryDetail,
     Companies\Companies as CompaniesSite,
+    Companies\CompanyDetail as CompanyDetailSite,
     Home,
     JobDetail,
     JobSearch,
@@ -17,6 +18,7 @@ Route::get('/job-search', JobSearch::class)->name('jobs.search');
 Route::get('/categories', Categories::class)->name('categories');
 Route::get('/c/{id}/{slug?}', CategoryDetail::class)->name('categories.detail');
 Route::get('/companies', CompaniesSite::class)->name('companies');
+Route::get('/company/{id}/{slug?}', CompanyDetailSite::class)->name('company.detail');
 
 Route::middleware(['auth'])->group(function () {
 
