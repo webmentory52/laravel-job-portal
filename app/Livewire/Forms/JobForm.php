@@ -55,6 +55,15 @@ class JobForm extends Form
     #[Validate('required|accepted')]
     public $agreement_accepted = 0;
 
+    public ?CandidateJob $job = null;
+
+
+    public function setJob(CandidateJob $job)
+    {
+        $this->job = $job;
+        $this->fill($job->only(['title', 'category_id', 'location', 'salary', 'job_type_id', 'work_place_id', 'expires_at', 'description', 'agreement_accepted']));
+    }
+
     public function save()
     {
         $validated = $this->validate();
@@ -78,6 +87,24 @@ class JobForm extends Form
         $this->reset();
 
         return $job;
+    }
+
+    public function update()
+    {
+        $validated = $this->validate();
+
+        if(!$this->hasAtLeastOneDescriptionItem()) {
+            $this->addError('description', 'You must add at least one description section.');
+            return;
+        }
+
+        $validated = [...$validated,
+            'status' => JobStatusEnum::Approved->value
+        ];
+
+        $validated['description'] = array_filter($validated['description'], fn($item) => isset($item['title']) && isset($item['content']));
+
+        $this->job->update($validated);
     }
 
     protected function hasAtLeastOneDescriptionItem()

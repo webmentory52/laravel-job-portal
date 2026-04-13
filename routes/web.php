@@ -43,6 +43,9 @@ Route::middleware(['auth'])->group(function () {
         });
     });
 
+
+    // Admin routes
+    Route::view('welcome', 'welcome')->name('admin.jobs.list');
 });
 
 require __DIR__.'/settings.php';

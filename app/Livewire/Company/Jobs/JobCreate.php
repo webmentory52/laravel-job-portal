@@ -4,8 +4,10 @@ namespace App\Livewire\Company\Jobs;
 
 use App\Library\Traits\JobFormHelpersTrait;
 use App\Livewire\Forms\JobForm;
+use App\Models\CandidateJob;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Masmerise\Toaster\Toaster;
 
 #[Title('Post New Job')]
 class JobCreate extends Component
@@ -14,11 +16,25 @@ class JobCreate extends Component
 
     public JobForm $form;
 
+    public function mount(?int $id = null)
+    {
+        if($id) {
+            $this->form->setJob(CandidateJob::find($id));
+        }
+    }
+
     public function submit()
     {
-        $this->form->save();
+        if(!$this->form->job) {
+            $this->form->save();
 
-        session()->flash("success", "<strong>Success!</strong> New job has been created.");
+            Toaster::success("New job has been created.");
+        } else {
+            $this->form->update();
+            Toaster::success("Job updated successfully.");
+        }
+
+        return redirect()->route('company.jobs.index');
     }
 
     public function render()

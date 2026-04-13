@@ -2,7 +2,7 @@
     <div class="max-w-xl mx-auto">
         <div class="text-center">
             <h1 class="font-bold text-3xl text-gray-800 sm:text-4xl">
-                Post a New Job
+                {{$form->job ? 'Update Job #' . $form->job->id : 'Post a New Job'}}
             </h1>
         </div>
 
@@ -88,7 +88,7 @@
                 <hr class="mb-3"/>
 
                 @foreach($form->description as $i => $description)
-                    <div class="mb-4 sm:mb-8">
+                    <div class="mb-4 sm:mb-8" wire:key="job-section-{{ $loop->iteration }}-{{ $description['title'] }}">
                         <div class="flex gap-2 items-center" wire:show="form.description[{{$i}}].title_editable == false">
                             <label for="description" class="block mb-2 text-sm font-medium text-foreground">{{ $description['title'] ?: 'N/A' }}</label>
                             <flux:icon.pencil wire:click="toggleSectionTitleEditable({{$i}})" class="size-4 cursor-pointer" title="Edit Title" />
@@ -97,7 +97,7 @@
                         <div class="flex gap-2 items-center" wire:show="form.description[{{$i}}].title_editable">
                             <input
                                 type="text"
-                                wire:model.defer.blur="form.description.{{ $i }}.title"
+                                wire:model="form.description.{{ $i }}.title"
                                 class="py-1 sm:py-2 px-4 block w-full border border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500"
                             >
 
@@ -106,7 +106,7 @@
                             </div>
                         </div>
 
-                        <x-shared.trix wire:model.defer="form.description.{{ $i }}.content" />
+                        <x-shared.trix wire:model="form.description.{{ $i }}.content" />
 {{--                        <textarea id="description" name="description" wire:model.live.blur="form.description.{{ $i }}.content" class="input"></textarea>--}}
 
                         <div class="text-end">
@@ -139,7 +139,7 @@
 
                 <div class="flex mt-3">
                     <div class="flex">
-                        <input type="checkbox" id="agreement_accepted" name="agreement_accepted" wire:model.defer.blur="form.agreement_accepted" value="1" class="shrink-0 mt-1.5 border-gray-200 rounded-sm text-blue-600 focus:ring-blue-500" />
+                        <input type="checkbox" id="agreement_accepted" name="agreement_accepted" wire:model.defer.blur="form.agreement_accepted" value="1" {{$form->agreement_accepted == 1 ? 'checked' : ''}} class="shrink-0 mt-1.5 border-gray-200 rounded-sm text-blue-600 focus:ring-blue-500" />
                     </div>
                     <div class="ms-3">
                         <label for="agreement_accepted" class="text-sm text-gray-600">By submitting this form I have read and acknowledged the terms and conditions</label>
@@ -153,7 +153,7 @@
 
                 <div class="mt-6 grid">
                     <button type="submit" class="btn btn-primary" wire:loading.attr="disabled">
-                        Submit
+                       {{$form->job ? 'Update' : 'Submit'}}
 
                         <svg wire:loading.delay.long class="ml-3  -ml-1 size-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                     </button>

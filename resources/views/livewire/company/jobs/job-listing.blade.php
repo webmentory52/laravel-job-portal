@@ -45,6 +45,7 @@
                         <div class="flex gap-2">
                             @if($candidateJob->isApproved())
                                 <button
+                                    wire:click.prevent="openExpireModal({{ $candidateJob->id }})"
                                     class="px-3 py-1 text-sm cursor-pointer transition bg-yellow-500 text-white hover:text-black hover:bg-yellow-600 rounded"
                                 >
                                     Expired
@@ -56,7 +57,7 @@
                                     Edit
                                 </a>
                             @endif
-                            <a class="text-sm mx-2  decoration-2 hover:underline transition focus:underline font-medium text-red-600" href="#">
+                            <a href="#" wire:click.prevent="showRemoveModal({{$candidateJob->id}})" class="text-sm mx-2  decoration-2 hover:underline transition focus:underline font-medium text-red-600">
                                 Delete
                             </a>
                         </div>
@@ -67,4 +68,43 @@
             @endforelse
         </flux:table.rows>
     </flux:table>
+
+    <flux:modal name="expire-job-modal" class="min-w-[22rem]">
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">Expire Job?</flux:heading>
+                <flux:text class="mt-2">
+                    You're about to update the job as expired.<br>
+                    This action cannot be reversed.
+                </flux:text>
+            </div>
+            <div class="flex gap-2">
+                <flux:spacer />
+                <flux:modal.close>
+                    <flux:button variant="ghost">Cancel</flux:button>
+                </flux:modal.close>
+                <flux:button type="button" wire:click.prevent="expireJob" variant="danger">Expire</flux:button>
+            </div>
+        </div>
+    </flux:modal>
+
+    <flux:modal name="remove-job-modal" class="min-w-[22rem]">
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">Remove Job?</flux:heading>
+                <flux:text class="mt-2">
+                    You're about to remove.<br>
+                    This action cannot be reversed.
+                </flux:text>
+            </div>
+            <div class="flex gap-2">
+                <flux:spacer />
+                <flux:modal.close>
+                    <flux:button variant="ghost">Cancel</flux:button>
+                </flux:modal.close>
+                <flux:button type="button" wire:click.prevent="removeJob" variant="danger">Remove</flux:button>
+            </div>
+        </div>
+    </flux:modal>
+
 </div>

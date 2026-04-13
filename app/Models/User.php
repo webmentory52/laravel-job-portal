@@ -122,4 +122,9 @@ class User extends Authenticatable
             UserRoleEnum::User->value => '/'
         };
     }
+
+    public function scopeAdmin($query)
+    {
+        $query->where('role', UserRoleEnum::Admin->value);
+    }
 }

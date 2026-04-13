@@ -2,17 +2,88 @@
 
 namespace App\Livewire\Company\Jobs;
 
+use App\Library\Enums\JobStatusEnum;
 use App\Models\CandidateJob;
+use App\Models\User;
+use App\Notifications\JobExpiredNotification;
+use Flux\Flux;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Masmerise\Toaster\Toaster;
 
 #[Layout('layouts.site')]
 #[Title('Job Listing')]
 class JobListing extends Component
 {
     use WithPagination;
+
+    public $expiredJob;
+
+    public $removeJobId;
+
+    public function openExpireModal($jobId)
+    {
+        $this->expiredJob = CandidateJob::find($jobId);
+
+        Flux::modal('expire-job-modal')->show();
+    }
+
+    public function expireJob()
+    {
+        if(!$this->expiredJob) {
+            return;
+        }
+
+        // Update status
+        $this->expiredJob->status = JobStatusEnum::Expired->value;
+        $this->expiredJob->save();
+
+        // Notify admins
+        User::admin()->get()
+            ->each(fn($admin) => $admin->notify(new JobExpiredNotification(
+                candidateJob: $this->expiredJob,
+                title: 'Job Expired by Company',
+                body: "Job '{$this->expiredJob->title}' expired by {$this->expiredJob->company->company_name}.",
+                clickUrl: route('admin.jobs.list')
+            )));
+
+        Toaster::success("Job status marked expired.");
+
+        Flux::modal('expire-job-modal')->close();
+
+        $this->expiredJob = null;
+
+        $this->redirectRoute('company.jobs.index');
+    }
+
+    public function showRemoveModal($jobId)
+    {
+        $this->removeJobId = $jobId;
+
+        Flux::modal('remove-job-modal')->show();
+    }
+
+    public function removeJob()
+    {
+        if(!$this->removeJobId) {
+            return;
+        }
+
+        $job = CandidateJob::find($this->removeJobId);
+
+        // Delete
+        $job->delete();
+
+        Toaster::success("Job removed successfully.");
+
+        $this->removeJobId = null;
+
+        Flux::modal('remove-job-modal')->close();
+
+        $this->redirectRoute('company.jobs.index');
+    }
 
     public function render()
     {
