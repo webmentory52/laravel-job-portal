@@ -4,6 +4,10 @@
         Dashboard
     </a>
 
+    <a href="{{route('company.jobs.index')}}" wire:navigate class="p-2 md:px-3 flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 " >
+        Company Jobs
+    </a>
+
     @if(auth()->user()->currentUserBelongsToCompany() && auth()->user()->isCurrentUserCompanyAdmin())
         <a class="p-2 md:px-3 flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 {{ request()->routeIs('company.join-requests') ? 'bg-gray-200' : '' }}" href="{{ route('company.join-requests') }}" wire:navigate>
             Join Requests @if($pendingJoinRequestsCount) <span class="bg-red-600 text-white text-xs rounded-[50%] px-2">{{$pendingJoinRequestsCount}}</span>  @endif
