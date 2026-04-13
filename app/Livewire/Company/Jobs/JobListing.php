@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Notifications\JobExpiredNotification;
 use Flux\Flux;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -22,6 +23,10 @@ class JobListing extends Component
     public $expiredJob;
 
     public $removeJobId;
+
+    public $bulkAction = "";
+
+    public $bulkActionIds = [];
 
     public function openExpireModal($jobId)
     {
@@ -81,6 +86,63 @@ class JobListing extends Component
         $this->removeJobId = null;
 
         Flux::modal('remove-job-modal')->close();
+
+        $this->redirectRoute('company.jobs.index');
+    }
+
+    private function closeBulkModal()
+    {
+        Flux::modal('bulk-action-modal')->close();
+    }
+
+    #[On('bulk-action')]
+    public function onBulkAction($action, $ids)
+    {
+        $this->bulkAction = $action;
+        $this->bulkActionIds = $ids;
+
+        Flux::modal('bulk-action-modal')->show();
+    }
+
+    public function processBulkAction()
+    {
+        if(!$this->bulkAction || !$this->bulkActionIds) {
+            return;
+        }
+
+       switch ($this->bulkAction) {
+            case 'delete_all':
+                $this->deleteAll();
+            break;
+
+            case 'expire_all':
+               $this->expireAll();
+            break;
+        }
+    }
+
+    public function deleteAll()
+    {
+        CandidateJob::whereIn('id', $this->bulkActionIds)->delete();
+
+        Toaster::success("Jobs deleted successfully.");
+
+        $this->closeBulkModal();
+        $this->reset(["bulkAction", "bulkActionIds"]);
+
+        $this->redirectRoute('company.jobs.index');
+    }
+
+    public function expireAll()
+    {
+        CandidateJob::whereIn('id', $this->bulkActionIds)->update([
+           'status' => JobStatusEnum::Expired->value
+        ]);
+
+        Toaster::success("Jobs marked as expired.");
+
+        $this->closeBulkModal();
+        $this->reset(["bulkAction", "bulkActionIds"]);
 
         $this->redirectRoute('company.jobs.index');
     }
