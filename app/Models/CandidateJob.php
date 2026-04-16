@@ -64,6 +64,16 @@ class CandidateJob extends Model
         $query->where('status', JobStatusEnum::Approved->value);
     }
 
+    public function scopePending($query)
+    {
+        $query->where('status', JobStatusEnum::Pending->value);
+    }
+
+    public function scopeRejected($query)
+    {
+        $query->where('status', JobStatusEnum::Rejected->value);
+    }
+
     public function isApproved()
     {
         return $this->status === JobStatusEnum::Approved->value;

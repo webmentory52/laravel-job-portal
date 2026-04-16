@@ -1,8 +1,14 @@
 <div class="flex flex-col md:flex-row md:justify-end md:items-center gap-0.5 md:gap-1">
 
-    <a class="p-2 md:px-3 flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 " href="#" wire:navigate>
-        Dashboard
-    </a>
+{{--    <a class="p-2 md:px-3 flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 " href="#" wire:navigate>--}}
+{{--        Dashboard--}}
+{{--    </a>--}}
+
+    @if(auth()->user()->currentUserBelongsToCompany())
+        <a class="p-2 md:px-3 flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 {{request()->routeIs('company.dashboard') ? 'bg-gray-200' : ''}}" href="{{route('company.dashboard')}}" wire:navigate>
+            Company Dashboard
+        </a>
+    @endif
 
     <a href="{{route('company.jobs.index')}}" wire:navigate class="p-2 md:px-3 flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 " >
         Company Jobs

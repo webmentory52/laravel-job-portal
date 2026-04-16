@@ -3,7 +3,8 @@
 use App\Livewire\Company\{
     Jobs\JobCreate as CompanyJobCreate,
     Jobs\JobListing as CompanyJobListing,
-    JoinRequests
+    JoinRequests,
+    Dashboard as CompanyDashboard
 };
 use App\Livewire\Site\{
     Categories\Categories,
@@ -36,6 +37,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['check.onboarding'])->group(function () {
 
         Route::middleware(['company'])->prefix('company')->name('company.')->group(function() {
+            Route::get('/dashboard', CompanyDashboard::class)->name('dashboard');
             Route::get('/jobs/create/{id?}', CompanyJobCreate::class)->name('jobs.create');
             Route::get('/jobs', CompanyJobListing::class)->name('jobs.index');
 
