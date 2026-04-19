@@ -8,11 +8,11 @@
         <a class="p-2 md:px-3 flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 {{request()->routeIs('company.dashboard') ? 'bg-gray-200' : ''}}" href="{{route('company.dashboard')}}" wire:navigate>
             Company Dashboard
         </a>
-    @endif
 
-    <a href="{{route('company.jobs.index')}}" wire:navigate class="p-2 md:px-3 flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 " >
-        Company Jobs
-    </a>
+        <a href="{{route('company.jobs.index')}}" wire:navigate class="p-2 md:px-3 flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 " >
+            Company Jobs
+        </a>
+    @endif
 
     @if(auth()->user()->currentUserBelongsToCompany() && auth()->user()->isCurrentUserCompanyAdmin())
         <a class="p-2 md:px-3 flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 {{ request()->routeIs('company.join-requests') ? 'bg-gray-200' : '' }}" href="{{ route('company.join-requests') }}" wire:navigate>

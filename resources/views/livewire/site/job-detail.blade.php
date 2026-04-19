@@ -69,10 +69,20 @@
 
         <!-- Apply To Job Form -->
         @if($job->isApproved())
-            <h2 class="text-xl font-semibold mb-5">Apply Now</h2>
-            <form>
+            <h2 class="text-xl font-semibold mb-5 mt-[4rem]">Apply Now</h2>
 
-            </form>
+            @auth
+                <livewire:site.job-apply-form :job="$job" />
+            @else
+                <p><a href="{{url('/login')}}" wire:navigate class="underline text-blue-500">Sign in to submit application.</a></p>
+            @endauth
+        @else
+            <div class="text-red-400 text-sm mt-10 flex gap-2">
+
+              <flux:icon.exclamation-circle class="size-5" />
+
+              <span>You can't apply to this job at this moment.</span>
+            </div>
         @endif
 
     </div>
