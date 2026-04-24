@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Library\Enums\JobApplicationStatusEnum;
 use Illuminate\Database\Eloquent\Model;
 
 class JobApplication extends Model
@@ -24,5 +25,10 @@ class JobApplication extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function isPending()
+    {
+        return $this->status === JobApplicationStatusEnum::Pending->value;
     }
 }

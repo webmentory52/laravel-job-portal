@@ -4,7 +4,8 @@ use App\Livewire\Company\{
     Jobs\JobCreate as CompanyJobCreate,
     Jobs\JobListing as CompanyJobListing,
     JoinRequests,
-    Dashboard as CompanyDashboard
+    Dashboard as CompanyDashboard,
+    Applications\ListApplications as CompanyApplications
 };
 use App\Livewire\Site\{
     Categories\Categories,
@@ -42,7 +43,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/jobs', CompanyJobListing::class)->name('jobs.index');
 
             Route::get('/join-requests', JoinRequests::class)->name('join-requests');
-            Route::view('/', 'welcome')->name('applications');
+            Route::get('/applications', CompanyApplications::class)->name('applications');
         });
     });
 
