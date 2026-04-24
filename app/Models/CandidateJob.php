@@ -83,4 +83,8 @@ class CandidateJob extends Model
     {
         return $this->status === JobStatusEnum::Expired->value;
     }
+
+    public function hasUserApplied(int $userId) : bool {
+        return $this->jobApplications()->where('user_id', $userId)->exists();
+    }
 }

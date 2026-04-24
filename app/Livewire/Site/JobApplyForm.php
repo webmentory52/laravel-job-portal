@@ -4,6 +4,7 @@ namespace App\Livewire\Site;
 
 use App\Models\CandidateJob;
 use App\Models\JobApplication;
+use App\Notifications\NewJobApplicationNotification;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -28,10 +29,17 @@ class JobApplyForm extends Component
     #[Validate('required|file|mimes:pdf,doc,docx|max:3048')]
     public $resume;
 
+    public $isSubmitting = false;
+
 
     public function submit()
     {
         $this->validate();
+
+        if($this->job->hasUserApplied(auth()->user()->id)) {
+            Toaster::error("You have already applied for this job.");
+            return;
+        }
 
         // Save the application data
         $payload = [
@@ -52,10 +60,12 @@ class JobApplyForm extends Component
         ]);
 
         // Send notification
-
+        $this->job->company->users->each(fn($user) => $user->notify(new NewJobApplicationNotification($application)));
 
         // Reset fields
         $this->reset(["coverLetter", "resume", "phone"]);
+
+        $this->isSubmitting = true;
 
         Toaster::success("Your application has been submitted successfully.");
     }
