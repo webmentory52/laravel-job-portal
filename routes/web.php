@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\ResumeController;
 use App\Livewire\Company\{
     Jobs\JobCreate as CompanyJobCreate,
     Jobs\JobListing as CompanyJobListing,
     JoinRequests,
     Dashboard as CompanyDashboard,
-    Applications\ListApplications as CompanyApplications
+    Applications\ListApplications as CompanyApplications,
+    Applications\ApplicationShow as CompanyApplicationShow
 };
 use App\Livewire\Site\{
     Categories\Categories,
@@ -26,6 +28,7 @@ Route::get('/categories', Categories::class)->name('categories');
 Route::get('/c/{id}/{slug?}', CategoryDetail::class)->name('categories.detail');
 Route::get('/companies', CompaniesSite::class)->name('companies');
 Route::get('/companies/{id}/{slug?}', CompanyDetailSite::class)->name('company.detail');
+Route::get('/resumes/{application}', [ResumeController::class, 'show'])->name('resumes.show');
 
 Route::middleware(['auth'])->group(function () {
 
@@ -44,6 +47,7 @@ Route::middleware(['auth'])->group(function () {
 
             Route::get('/join-requests', JoinRequests::class)->name('join-requests');
             Route::get('/applications', CompanyApplications::class)->name('applications');
+            Route::get('/applications/{id}', CompanyApplicationShow::class)->name('applications.show');
         });
     });
 

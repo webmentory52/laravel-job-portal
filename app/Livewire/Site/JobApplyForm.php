@@ -23,7 +23,7 @@ class JobApplyForm extends Component
     #[Validate('required|max:15')]
     public $phone = "";
 
-    #[Validate('required|max:1000')]
+    #[Validate('required|max:3000')]
     public $coverLetter = "";
 
     #[Validate('required|file|mimes:pdf,doc,docx|max:3048')]
