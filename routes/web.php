@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ResumeController;
+use App\Livewire\User\MyApplications;
 use App\Livewire\Company\{
     Jobs\JobCreate as CompanyJobCreate,
     Jobs\JobListing as CompanyJobListing,
@@ -39,6 +40,8 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::middleware(['check.onboarding'])->group(function () {
+
+        Route::get('my-applications', MyApplications::class)->name('applications.my');
 
         Route::middleware(['company'])->prefix('company')->name('company.')->group(function() {
             Route::get('/dashboard', CompanyDashboard::class)->name('dashboard');
