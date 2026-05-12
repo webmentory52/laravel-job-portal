@@ -8,6 +8,10 @@
         Dashboard
     </a>
 
+    <a class="p-2 md:px-3 flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 {{request()->routeIs('favorites.my') ? 'bg-gray-200' : ''}}" href="{{route('favorites.my')}}" wire:navigate>
+        Favorites
+    </a>
+
     @if(auth()->user()->currentUserBelongsToCompany())
         <a class="p-2 md:px-3 flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 {{request()->routeIs('company.dashboard') ? 'bg-gray-200' : ''}}" href="{{route('company.dashboard')}}" wire:navigate>
             Company Dashboard
