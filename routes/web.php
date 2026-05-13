@@ -4,7 +4,8 @@ use App\Http\Controllers\ResumeController;
 use App\Livewire\User\{
     MyApplications,
     Dashboard as UserDashboard,
-    SavedJobs
+    SavedJobs,
+    Profile\Edit as UserProfileEdit
 };
 use App\Livewire\Company\{
     Jobs\JobCreate as CompanyJobCreate,
@@ -48,6 +49,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', UserDashboard::class)->name('dashboard');
         Route::get('/my-applications', MyApplications::class)->name('applications.my');
         Route::get('/favorites', SavedJobs::class)->name('favorites.my');
+        Route::get('/profile/edit', UserProfileEdit::class)->name('profile.edit');
 
         Route::middleware(['company'])->prefix('company')->name('company.')->group(function() {
             Route::get('/dashboard', CompanyDashboard::class)->name('dashboard');
