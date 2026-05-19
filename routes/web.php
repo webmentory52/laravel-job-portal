@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ResumeController;
+use App\Http\Middleware\CompanyAdminMiddleware;
 use App\Livewire\User\{
     MyApplications,
     Dashboard as UserDashboard,
@@ -13,7 +14,8 @@ use App\Livewire\Company\{
     JoinRequests,
     Dashboard as CompanyDashboard,
     Applications\ListApplications as CompanyApplications,
-    Applications\ApplicationShow as CompanyApplicationShow
+    Applications\ApplicationShow as CompanyApplicationShow,
+    Profile\Edit as CompanyProfileEdit
 };
 use App\Livewire\Site\{
     Categories\Categories,
@@ -56,9 +58,13 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/jobs/create/{id?}', CompanyJobCreate::class)->name('jobs.create');
             Route::get('/jobs', CompanyJobListing::class)->name('jobs.index');
 
-            Route::get('/join-requests', JoinRequests::class)->name('join-requests');
             Route::get('/applications', CompanyApplications::class)->name('applications');
             Route::get('/applications/{id}', CompanyApplicationShow::class)->name('applications.show');
+
+            Route::middleware(CompanyAdminMiddleware::class)->group(function () {
+                Route::get('/join-requests', JoinRequests::class)->name('join-requests');
+                Route::get('/profile/edit', CompanyProfileEdit::class)->name('profile.edit');
+            });
         });
     });
 
