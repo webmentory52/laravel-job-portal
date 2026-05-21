@@ -20,12 +20,14 @@ class CompanyForm extends Form
 
     public $existing_logo = null;
 
+    public $isEdit = false;
+
     protected function rules()
     {
         return [
           "company_name" => "required|string|max:100",
           "website" => "required|url|string",
-          "email" => "required|email|string",
+          "email" => "required|email|string".($this->isEdit && $this->company ? "|unique:companies,email,{$this->company->id}" : ""),
           "bio" => "required|string|max:" . $this->bioMaxLength,
           "logo" => "nullable|image|max:3024|mimes:jpg,jpeg,png,webp",
         ];
@@ -33,6 +35,8 @@ class CompanyForm extends Form
 
     public function load($user)
     {
+        $this->isEdit = true;
+
         $this->company = $user?->getCompany();
         $this->company_name = $this->company?->company_name;
         $this->website = $this->company?->website;
@@ -43,6 +47,8 @@ class CompanyForm extends Form
 
     public function create($user)
     {
+        $this->isEdit = false;
+
         $validated = $this->validate();
 
         $this->company = Company::create($validated);

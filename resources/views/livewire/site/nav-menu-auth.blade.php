@@ -1,48 +1,16 @@
 <div class="flex flex-col md:flex-row md:justify-end md:items-center gap-0.5 md:gap-1">
 
+    <flux:navbar>
+        @foreach($navItems as $item)
+            @if(!isset($item['show_only']) || (isset($item['show_only']) && $item['show_only']))
+                <x-shared.nav-item wire:key="{{'item'.$loop->iteration}}" :item="$item" />
+            @endif
+        @endforeach
+    </flux:navbar>
+
 {{--    <a class="p-2 md:px-3 flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 " href="#" wire:navigate>--}}
 {{--        Dashboard--}}
 {{--    </a>--}}
-
-    <a class="p-2 md:px-3 flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 {{request()->routeIs('dashboard') ? 'bg-gray-200' : ''}}" href="{{route('dashboard')}}" wire:navigate>
-        Dashboard
-    </a>
-
-    <a class="p-2 md:px-3 flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 {{request()->routeIs('profile.edit') ? 'bg-gray-200' : ''}}" href="{{route('profile.edit')}}" wire:navigate>
-        Edit Profile
-    </a>
-
-    <a class="p-2 md:px-3 flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 {{request()->routeIs('favorites.my') ? 'bg-gray-200' : ''}}" href="{{route('favorites.my')}}" wire:navigate>
-        Favorites
-    </a>
-
-    @if(auth()->user()->currentUserBelongsToCompany())
-        <a class="p-2 md:px-3 flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 {{request()->routeIs('company.dashboard') ? 'bg-gray-200' : ''}}" href="{{route('company.dashboard')}}" wire:navigate>
-            Company Dashboard
-        </a>
-
-        <a href="{{route('company.jobs.index')}}" wire:navigate class="p-2 md:px-3 flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 " >
-            Company Jobs
-        </a>
-
-        <a href="{{route('company.applications')}}" wire:navigate class="p-2 md:px-3 flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 {{request()->routeIs('company.applications') ? 'bg-gray-200' : ''}}" >
-            Job Applications
-        </a>
-    @endif
-
-    @if(auth()->user()->currentUserBelongsToCompany() && auth()->user()->isCurrentUserCompanyAdmin())
-        <a class="p-2 md:px-3 flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 {{request()->routeIs('company.profile.edit') ? 'bg-gray-200' : ''}}" href="{{route('company.profile.edit')}}" wire:navigate>
-            Edit Company Profile
-        </a>
-
-        <a class="p-2 md:px-3 flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 {{ request()->routeIs('company.join-requests') ? 'bg-gray-200' : '' }}" href="{{ route('company.join-requests') }}" wire:navigate>
-            Join Requests @if($pendingJoinRequestsCount) <span class="bg-red-600 text-white text-xs rounded-[50%] px-2">{{$pendingJoinRequestsCount}}</span>  @endif
-        </a>
-    @endif
-
-    <a class="p-2 md:px-3 flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 {{ request()->routeIs('applications.my') ? 'bg-gray-200' : '' }}" href="{{ route('applications.my') }}" wire:navigate>
-        My Applications
-    </a>
 
     <form method="POST" action="{{ route('logout') }}" class="w-full">
         @csrf
