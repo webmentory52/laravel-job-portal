@@ -118,8 +118,8 @@ class User extends Authenticatable
     public function getRedirectUrl()
     {
         return match ($this->role) {
-            UserRoleEnum::Admin->value => '/dashboard',
-            UserRoleEnum::User->value => '/'
+            UserRoleEnum::Admin->value => '/admin/dashboard',
+            UserRoleEnum::User->value => '/dashboard'
         };
     }
 

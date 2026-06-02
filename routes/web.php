@@ -42,10 +42,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/onboarding', UserOnboarding::class)->name('onboarding.show');
 
-    Route::middleware(['verified'])->group(function () {
-        Route::view('dashboard', 'dashboard')->name('dashboard');
-    });
-
     Route::middleware(['check.onboarding'])->group(function () {
 
         Route::get('/dashboard', UserDashboard::class)->name('dashboard');
@@ -68,9 +64,6 @@ Route::middleware(['auth'])->group(function () {
         });
     });
 
-
-    // Admin routes
-    Route::view('welcome', 'welcome')->name('admin.jobs.list');
 });
 
 require __DIR__.'/settings.php';
