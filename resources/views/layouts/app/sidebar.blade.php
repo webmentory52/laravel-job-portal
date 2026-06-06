@@ -15,6 +15,9 @@
                     <flux:sidebar.item icon="home" :href="route('admin.dashboard')" :current="request()->routeIs('admin.dashboard')" wire:navigate>
                         {{ __('Dashboard') }}
                     </flux:sidebar.item>
+                    <flux:sidebar.item icon="home" :href="route('admin.jobs.index')" :current="request()->routeIs('admin.jobs.index')" wire:navigate>
+                        {{ __('Job Listing') }}
+                    </flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>
 
@@ -81,6 +84,7 @@
 
         {{ $slot }}
 
+        <x-toaster-hub />
         @fluxScripts
     </body>
 </html>

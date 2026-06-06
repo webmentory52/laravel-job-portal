@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Admin\Jobs\JobListing;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
@@ -30,7 +31,7 @@ Route::middleware(['auth', 'superadmin'])->prefix('admin/dashboard')->name('admi
     });
 
     // Other routes
-    Route::name('admin.')->group(function() {
-
+    Route::prefix('jobs')->group(function() {
+        Route::get('/', JobListing::class)->name('jobs.index');
     });
 });
