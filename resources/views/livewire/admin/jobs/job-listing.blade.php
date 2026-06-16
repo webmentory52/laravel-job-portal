@@ -2,7 +2,7 @@
 
     <div class="flex justify-between items-center mb-4">
         <h1 class="text-2xl font-semibold">Job Listings</h1>
-        <a href="#" wire:navigate class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <a href="{{route('admin.jobs.create')}}" wire:navigate class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
             <flux:icon name="plus" class="size-4 ml-2" />
             Create Job
         </a>
@@ -75,8 +75,17 @@
                             {{ ucwords($job->category->name) }}
                         </flux:table.cell>
                         <flux:table.cell class="whitespace-nowrap">
-                            @if(View::exists('components.job-status.job-'.$job->status))
-                                <x-dynamic-component :component="'job-status.job-' . $job->status" />
+
+                            @if($job->status === \App\Library\Enums\JobStatusEnum::Pending->value)
+                                <flux:select size="sm" placeholder="Status..." style="width: 150px"  wire:change="updateStatus({{$job->id}}, $event.target.value)">
+                                    @foreach(array_filter(\App\Library\Enums\JobStatusEnum::cases(), fn($c) => $c->value !== 'expired') as $case)
+                                         <flux:select.option :value="$case->value" wire:key="$case->value" :selected="$case->value == $job->status">{{$case->name}}</flux:select.option>
+                                    @endforeach
+                                </flux:select>
+                            @else
+                                @if(View::exists('components.job-status.job-'.$job->status))
+                                    <x-dynamic-component :component="'job-status.job-' . $job->status" />
+                                @endif
                             @endif
                         </flux:table.cell>
                         <flux:table.cell class="whitespace-nowrap">
@@ -93,7 +102,7 @@
                                     </button>
                                 @endif
 
-                                <a href="#" class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-hidden focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none ">
+                                <a href="{{route('admin.jobs.create', $job->id)}}" class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-hidden focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none ">
                                     <flux:icon name="pencil" class="size-4" />
                                 </a>
 

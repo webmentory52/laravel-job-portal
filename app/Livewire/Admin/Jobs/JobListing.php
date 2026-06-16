@@ -4,11 +4,13 @@ namespace App\Livewire\Admin\Jobs;
 
 use App\Library\Traits\JobActionsTrait;
 use App\Models\CandidateJob;
+use App\Notifications\JobStatusUpdated;
 use Flux\Flux;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Masmerise\Toaster\Toaster;
 
 #[Title('Job Listing | Admin')]
 class JobListing extends Component
@@ -28,6 +30,22 @@ class JobListing extends Component
     public function updatingSearch()
     {
         $this->resetPage();
+    }
+
+    public function updateStatus($jobId, $status)
+    {
+        $job = CandidateJob::findOrFail($jobId);
+        $job->update(['status' => $status]);
+
+        // Send notification
+        $job->user->notify(new JobStatusUpdated(
+            candidateJob: $job,
+            title: "Job Status Updated",
+            body: "Your job \"{$job->title}\" has been {$status}.",
+            clickUrl: route('admin.jobs.create')
+        ));
+
+        Toaster::success('Job status updated.');
     }
 
     public function render()

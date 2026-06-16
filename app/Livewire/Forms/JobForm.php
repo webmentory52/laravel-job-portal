@@ -4,6 +4,8 @@ namespace App\Livewire\Forms;
 
 use App\Library\Enums\JobStatusEnum;
 use App\Models\CandidateJob;
+use App\Models\Company;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -52,16 +54,27 @@ class JobForm extends Form
         ]
     ];
 
-    #[Validate('required|accepted')]
     public $agreement_accepted = 0;
 
     public ?CandidateJob $job = null;
 
+    public $company_id = null;
+
+
+    protected function rules()
+    {
+        return [
+          'agreement_accepted' => [
+              'accepted',
+              Rule::requiredIf(! auth()->user()->isAdmin)
+          ]
+        ];
+    }
 
     public function setJob(CandidateJob $job)
     {
         $this->job = $job;
-        $this->fill($job->only(['title', 'category_id', 'location', 'salary', 'job_type_id', 'work_place_id', 'expires_at', 'description', 'agreement_accepted']));
+        $this->fill($job->only(['title', 'category_id', 'location', 'salary', 'job_type_id', 'work_place_id', 'expires_at', 'description', 'agreement_accepted', 'company_id']));
     }
 
     public function save()
@@ -73,12 +86,17 @@ class JobForm extends Form
             return;
         }
 
-        $validated = [...$validated,
-            'user_id' => auth()->user()->id,
-            'company_id' => auth()->user()->getCompany()?->id,
-//             'status' => JobStatusEnum::Pending->value,
-            'status' => JobStatusEnum::Approved->value
-        ];
+        if(!auth()->user()->isAdmin()) {
+            $validated['company_id'] = auth()->user()->getCompany()?->id;
+            $validated['user_id'] = auth()->user()->id;
+            $validated['status'] = JobStatusEnum::Pending->value;
+        } else {
+            $validated['company_id'] = $this->company_id;
+            $company = Company::with('users')->find($this->company_id);
+            $validated['user_id'] = $company->users()?->first()?->id;
+            $validated['status'] = JobStatusEnum::Approved->value;
+            $validated['agreement_accepted'] = 1;
+        }
 
         $validated['description'] = array_filter($validated['description'], fn($item) => isset($item['title']) && isset($item['content']));
 
@@ -98,9 +116,13 @@ class JobForm extends Form
             return;
         }
 
-        $validated = [...$validated,
-            'status' => JobStatusEnum::Approved->value
-        ];
+        if(auth()->user()->isAdmin()) {
+            $validated['company_id'] = $this->company_id;
+        } else {
+            if(in_array($this->job->status, [JobStatusEnum::Approved->value, JobStatusEnum::Rejected->value])) {
+                $validated['status'] = JobStatusEnum::Pending->value;
+            }
+        }
 
         $validated['description'] = array_filter($validated['description'], fn($item) => isset($item['title']) && isset($item['content']));
 
