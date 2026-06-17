@@ -15,7 +15,7 @@ class JobPendingApproval extends Notification implements ShouldQueue
     /**
      * Create a new notification instance.
      */
-    public function __construct(string $title, string $message, ?string $clickUrl, public CandidateJob $job)
+     public function __construct(readonly private string $title, readonly private string $message, readonly private ?string $clickUrl, public CandidateJob $job)
     {
         //
     }
@@ -54,7 +54,10 @@ class JobPendingApproval extends Notification implements ShouldQueue
             'job_id' => $this->job->id,
             'title' => $this->job->title,
             'company' => $this->job->company->company_name,
-            'created_at' => now()
+            'created_at' => now(),
+            'notify_title' => $this->title,
+            'notify_message' => $this->message,
+            'click_url' => $this->clickUrl
         ];
     }
 }

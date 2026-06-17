@@ -4,6 +4,19 @@
         @include('partials.head')
     </head>
     <body class="min-h-screen bg-white dark:bg-zinc-800">
+        <flux:header container class="border-b border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
+            <div class="flex w-full justify-end items-center">
+                <div class="flex items-center gap-4"></div>
+                <div class="flex-1"></div>
+                <div class="flex items-center gap-4">
+
+                    <!-- Notifications -->
+                    <livewire:admin.header-notifications />
+
+                </div>
+            </div>
+        </flux:header>
+
         <flux:sidebar sticky collapsible="mobile" class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
             <flux:sidebar.header>
                 <x-app-logo :sidebar="true" href="{{ route('admin.dashboard') }}" wire:navigate />

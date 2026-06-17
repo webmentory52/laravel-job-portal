@@ -29,15 +29,15 @@ class JobCreate extends Component
     public function submit()
     {
         if(!$this->form->job) {
-            $this->form->save();
+            $job = $this->form->save();
 
             // Send notification
             User::admin()->get()
                 ->each(fn($admin) => $admin->notify(new JobPendingApproval(
-                    job: $this->form->job,
+                    job: $job,
                     title: 'New Job Submitted',
-                    message: "Job '{$this->form->job->title}' is waiting for approval.",
-                    clickUrl: route('admin.jobs.create', $this->form->job->id)
+                    message: "Job '{$job->title}' is waiting for approval.",
+                    clickUrl: route('admin.jobs.create', $job->id)
                 )));
 
             Toaster::success("New job has been created.");

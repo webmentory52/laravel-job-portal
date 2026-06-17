@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Jobs;
 
+use App\Library\Traits\JobFormHelpersTrait;
 use App\Livewire\Forms\JobForm;
 use App\Models\CandidateJob;
 use App\Models\Company;
@@ -13,6 +14,8 @@ use Masmerise\Toaster\Toaster;
 #[Title('Create Job | Admin')]
 class CreateJob extends Component
 {
+    use JobFormHelpersTrait;
+
     public JobForm $form;
 
     public $companies = [];
@@ -32,7 +35,8 @@ class CreateJob extends Component
             ->select("id", "company_name")
             ->whereLike("company_name", '%' . $query . '%')
             ->limit(5)
-            ->get()->map(fn($item) => ['id' => $item->id, 'name' => $item->company_name])->toArray();
+            ->get()->map(fn($item) => ['id' => $item->id, 'name' => $item->company_name])
+            ->toArray();
     }
 
     #[On('clear-selection')]

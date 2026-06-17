@@ -65,8 +65,7 @@ class JobForm extends Form
     {
         return [
           'agreement_accepted' => [
-              'accepted',
-              Rule::requiredIf(! auth()->user()->isAdmin)
+              Rule::requiredIf(! auth()->user()->isAdmin())
           ]
         ];
     }
@@ -100,11 +99,11 @@ class JobForm extends Form
 
         $validated['description'] = array_filter($validated['description'], fn($item) => isset($item['title']) && isset($item['content']));
 
-        $job = CandidateJob::create($validated);
+        $this->job = CandidateJob::create($validated);
 
-        $this->reset();
+//        $this->reset();
 
-        return $job;
+        return $this->job;
     }
 
     public function update()

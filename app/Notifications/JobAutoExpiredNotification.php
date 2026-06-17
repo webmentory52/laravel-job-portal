@@ -8,14 +8,14 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class JobStatusUpdated extends Notification implements ShouldQueue
+class JobAutoExpiredNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(readonly private string $title, readonly private string $body, readonly private ?string $clickUrl, public CandidateJob $candidateJob)
+    public function __construct(public CandidateJob $job)
     {
         //
     }
@@ -27,7 +27,7 @@ class JobStatusUpdated extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+        return ['mail'];
     }
 
     /**
@@ -36,10 +36,10 @@ class JobStatusUpdated extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Job Status Updated')
-            ->line("The job {$this->candidateJob->title} status has been updated to {$this->candidateJob->status} by site admin.")
-            ->line("Job Title: {$this->candidateJob->title}")
-            ->action('View Job', route('job-detail', $this->candidateJob->id))
+            ->subject("Job Auto Expired")
+            ->line("The job {$this->job->title} was auto-expired automatically.")
+            ->line("Job Title: {$this->job->title}")
+            ->action('View All Jobs', route('company.jobs.index'))
             ->line('Thank you for using our application!');
     }
 
@@ -51,13 +51,7 @@ class JobStatusUpdated extends Notification implements ShouldQueue
     public function toArray(object $notifiable): array
     {
         return [
-            'job_id' => $this->candidateJob->id,
-            'title' => $this->candidateJob->title,
-            'company' => $this->candidateJob->company->company_name,
-            'created_at' => now(),
-            'notify_title' => $this->title,
-            'notify_message' => $this->body,
-            'click_url' => $this->clickUrl
+            //
         ];
     }
 }

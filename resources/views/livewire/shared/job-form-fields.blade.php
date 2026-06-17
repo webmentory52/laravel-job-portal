@@ -24,7 +24,7 @@
     </div>
 
     @if(auth()->user()->isAdmin())
-        <livewire:shared.autocomplete label="Company" :list="$companies" />
+        <livewire:shared.autocomplete label="Company" :list="$companies" key="autocomplete-key" />
         @error('form.company_id')
             <div class="text-red-500 text-sm">{{ $message }}</div>
         @enderror

@@ -15,7 +15,7 @@ class JobExpiredNotification extends Notification implements ShouldQueue
     /**
      * Create a new notification instance.
      */
-    public function __construct(string $title, string $body, ?string $clickUrl, public CandidateJob $candidateJob)
+    public function __construct(readonly private string $title, readonly private string $body, readonly private ?string $clickUrl, public CandidateJob $candidateJob)
     {
         //
     }
@@ -53,7 +53,10 @@ class JobExpiredNotification extends Notification implements ShouldQueue
             'job_id' => $this->candidateJob->id,
             'title' => $this->candidateJob->title,
             'company' => $this->candidateJob->company->company_name,
-            'created_at' => now()
+            'created_at' => now(),
+            'notify_title' => $this->title,
+            'notify_message' => $this->body,
+            'click_url' => $this->clickUrl
         ];
     }
 }
