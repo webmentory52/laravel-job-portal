@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Admin\Categories\ListCategories;
 use App\Livewire\Admin\Jobs\CreateJob;
 use App\Livewire\Admin\Jobs\JobListing;
 use Illuminate\Support\Facades\Route;
@@ -36,4 +37,7 @@ Route::middleware(['auth', 'superadmin'])->prefix('admin/dashboard')->name('admi
         Route::get('/', JobListing::class)->name('jobs.index');
         Route::get('/create/{id?}', CreateJob::class)->name('jobs.create');
     });
+
+    // Categories
+    Route::get('/categories', ListCategories::class)->name('categories.index');
 });

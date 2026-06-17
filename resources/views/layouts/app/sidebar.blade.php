@@ -34,6 +34,9 @@
                     <flux:sidebar.item icon="plus" :href="route('admin.jobs.create')" :current="request()->routeIs('admin.jobs.create')" wire:navigate>
                         {{ __('Create Job') }}
                     </flux:sidebar.item>
+                    <flux:sidebar.item icon="tag" :href="route('admin.categories.index')" :current="request()->routeIs('admin.categories.index')" wire:navigate>
+                        {{ __('Categories') }}
+                    </flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>
 
