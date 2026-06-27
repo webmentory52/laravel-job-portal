@@ -40,6 +40,17 @@
                 </flux:sidebar.group>
             </flux:sidebar.nav>
 
+            <flux:sidebar.nav>
+                <flux:sidebar.group :heading="__('Configuration')" class="grid">
+                    <flux:sidebar.item icon="rectangle-stack" :href="route('admin.workplaces.index')" :current="request()->routeIs('admin.workplaces.index')" wire:navigate>
+                        {{ __('Workplaces') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="rectangle-stack" :href="route('admin.job-types.index')" :current="request()->routeIs('admin.job-types.index')" wire:navigate>
+                        {{ __('Job Types') }}
+                    </flux:sidebar.item>
+                </flux:sidebar.group>
+            </flux:sidebar.nav>
+
             <flux:spacer />
 
 

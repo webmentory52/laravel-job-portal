@@ -27,7 +27,7 @@
         </thead>
         <tbody class="divide-y divide-gray-100">
             @foreach($categories as $category)
-                <tr>
+                <tr wire:key="{{$category->id}}">
                     <td class="px-4 py-2">{{ $loop->iteration }}</td>
                     <td class="px-4 py-2">{{ $category->name }}</td>
                     <td class="px-4 py-2">

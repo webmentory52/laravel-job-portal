@@ -3,6 +3,8 @@
 use App\Livewire\Admin\Categories\ListCategories;
 use App\Livewire\Admin\Jobs\CreateJob;
 use App\Livewire\Admin\Jobs\JobListing;
+use App\Livewire\Admin\JobTypes\ListJobTypes;
+use App\Livewire\Admin\Workplaces\ListWorkplaces;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
@@ -40,4 +42,10 @@ Route::middleware(['auth', 'superadmin'])->prefix('admin/dashboard')->name('admi
 
     // Categories
     Route::get('/categories', ListCategories::class)->name('categories.index');
+
+    // Workplaces
+    Route::get('/workplaces', ListWorkplaces::class)->name('workplaces.index');
+
+    // Job Types
+    Route::get('/job-types', ListJobTypes::class)->name('job-types.index');
 });
