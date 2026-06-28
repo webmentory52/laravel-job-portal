@@ -37,6 +37,9 @@
                     <flux:sidebar.item icon="tag" :href="route('admin.categories.index')" :current="request()->routeIs('admin.categories.index')" wire:navigate>
                         {{ __('Categories') }}
                     </flux:sidebar.item>
+                    <flux:sidebar.item icon="building-office" :href="route('admin.companies.index')" :current="request()->routeIs('admin.companies.index')" wire:navigate>
+                        {{ __('Companies') }}
+                    </flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>
 

@@ -4,8 +4,10 @@ namespace App\Livewire\Admin\Jobs;
 
 use App\Library\Traits\JobActionsTrait;
 use App\Models\CandidateJob;
+use App\Models\Company;
 use App\Notifications\JobStatusUpdated;
 use Flux\Flux;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -21,6 +23,9 @@ class JobListing extends Component
     public $perPage = 10;
 
     public $search = '';
+
+    #[Url]
+    public $company_id = null;
 
     public function __construct()
     {
@@ -48,12 +53,21 @@ class JobListing extends Component
         Toaster::success('Job status updated.');
     }
 
+    #[Computed]
+    public function company()
+    {
+        return Company::find($this->company_id);
+    }
+
     public function render()
     {
         $query = CandidateJob::query();
 
         // Apply search filter
         $query->when($this->search, fn ($q, $search) => $q->where('title', 'like', "%{$search}%"));
+
+        // Apply company filter
+        $query->when($this->company_id, fn ($q, $companyId) => $q->where('company_id', $companyId));
 
         $jobs = $query->latest('created_at')
                         ->paginate($this->perPage);

@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Admin\Categories\ListCategories;
+use App\Livewire\Admin\Companies\ListCompanies;
 use App\Livewire\Admin\Jobs\CreateJob;
 use App\Livewire\Admin\Jobs\JobListing;
 use App\Livewire\Admin\JobTypes\ListJobTypes;
@@ -48,4 +49,7 @@ Route::middleware(['auth', 'superadmin'])->prefix('admin/dashboard')->name('admi
 
     // Job Types
     Route::get('/job-types', ListJobTypes::class)->name('job-types.index');
+
+    // Companies
+    Route::get('/companies', ListCompanies::class)->name('companies.index');
 });
