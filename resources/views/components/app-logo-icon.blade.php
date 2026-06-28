@@ -1,1 +1,1 @@
-<h3 class="text-xl font-bold">Job Portal</h3>
+<img src="{{asset('assets/images/logo.png')}}" alt="logo" {{ $attributes }} />

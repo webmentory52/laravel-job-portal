@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\Models\JoinRequest;
 use App\Models\User;
 use App\Notifications\CompanyJoinRequestNotification;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Masmerise\Toaster\Toaster;
 use Illuminate\Support\Facades\Notification;
@@ -19,9 +20,36 @@ class JoinCompany extends Component
 
     public function mount()
     {
-        $this->companies = Company::all()
-            ->map(fn($item) => ['id' => $item->id, 'name' => $item->company_name])
+//        $this->companies = Company::all()
+//            ->map(fn($item) => ['id' => $item->id, 'name' => $item->company_name])
+//            ->toArray();
+    }
+
+    #[On('search')]
+    public function onFilterCompanies($query)
+    {
+        $this->companies = Company::query()
+            ->select("id", "company_name")
+            ->whereLike("company_name", '%' . $query . '%')
+            ->limit(5)
+            ->get()->map(fn($item) => ['id' => $item->id, 'name' => $item->company_name])
             ->toArray();
+    }
+
+    #[On('clear-selection')]
+    public function onClearCompanies()
+    {
+        $this->companies = [];
+
+        $this->reset('companyId');
+    }
+
+    #[On('select-item')]
+    public function onSelectCompany($data)
+    {
+        if($data) {
+            $this->companyId = $data["id"];
+        }
     }
 
     public function join()

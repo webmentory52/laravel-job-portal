@@ -8,7 +8,7 @@
 <header class="w-full text-sm mb-6 lg:px-6 sm:px-1 flex justify-between pt-2">
     <div class="flex justify-between items-center gap-x-1">
         <a href="{{ route('home') }}" class="ms-2 me-5 flex items-center space-x-2 rtl:space-x-reverse lg:ms-0" wire:navigate>
-            <x-app-logo-icon class="size-9 fill-current text-black dark:text-white" />
+            <x-app-logo-icon class="size-9 w-15 h-15 object-cover fill-current text-black dark:text-white" />
         </a>
     </div>
 
